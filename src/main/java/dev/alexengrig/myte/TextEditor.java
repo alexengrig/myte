@@ -2,9 +2,18 @@ package dev.alexengrig.myte;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class TextEditor extends JFrame {
+    private final Executor backgroundExecutor;
+    private JButton stopButton;
+
     public TextEditor() throws HeadlessException {
+        this.backgroundExecutor = Executors.newCachedThreadPool();
         setTitle("My Text Editor");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(300, 300);
@@ -14,22 +23,29 @@ public class TextEditor extends JFrame {
     }
 
     private void initComponents() {
-        LogListener listener = new LogListener();
-        JTextArea textArea = new JTextArea();
-        textArea.addKeyListener(listener);
-        textArea.addAncestorListener(listener);
-        textArea.addComponentListener(listener);
-        textArea.addContainerListener(listener);
-        textArea.addFocusListener(listener);
-        textArea.addHierarchyListener(listener);
-        textArea.addMouseListener(listener);
-        textArea.addCaretListener(listener);
-        textArea.addVetoableChangeListener(listener);
-        textArea.addHierarchyBoundsListener(listener);
-        textArea.addMouseMotionListener(listener);
-        textArea.addMouseWheelListener(listener);
-        textArea.addPropertyChangeListener(listener);
-        textArea.addInputMethodListener(listener);
-        add(new JScrollPane(textArea));
+        setLayout(new FlowLayout());
+
+        stopButton = new JButton("Stop");
+        add(stopButton);
+
+        JButton goButton = new JButton("Go");
+        goButton.addActionListener(getGoButtonListener());
+        add(goButton);
+
+    }
+
+    private ActionListener getGoButtonListener() {
+        return event -> {
+            final FutureTask<Object> task = new FutureTask<>(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                    System.out.println("Completed!");
+                } catch (InterruptedException e) {
+                    System.out.println("Interrupted");
+                }
+            }, null);
+            stopButton.addActionListener(e -> task.cancel(true));
+            backgroundExecutor.execute(task);
+        };
     }
 }
