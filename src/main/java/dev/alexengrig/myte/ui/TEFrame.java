@@ -30,7 +30,7 @@ public class TEFrame extends JFrame {
     private void initComponents() {
         setJMenuBar(createMenuBar());
         setLayout(new BorderLayout());
-        textArea = new JTextArea("Text");
+        textArea = new JTextArea("Input your text here");
         textArea.getDocument().addDocumentListener(new MyDocumentListener() {
             private int count = textArea.getLineCount();
 
