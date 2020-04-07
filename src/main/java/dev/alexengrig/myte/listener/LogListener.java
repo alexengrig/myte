@@ -1,4 +1,4 @@
-package dev.alexengrig.myte;
+package dev.alexengrig.myte.listener;
 
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -15,7 +15,11 @@ import java.util.EventObject;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LogListener implements KeyListener, AncestorListener, ComponentListener, ContainerListener, FocusListener, HierarchyListener, MouseListener, CaretListener, VetoableChangeListener, HierarchyBoundsListener, MouseMotionListener, MouseWheelListener, PropertyChangeListener, InputMethodListener {
+public class LogListener implements KeyListener, AncestorListener, ComponentListener, ContainerListener,
+        FocusListener, HierarchyListener, MouseListener, CaretListener,
+        VetoableChangeListener, HierarchyBoundsListener, MouseMotionListener, MouseWheelListener,
+        PropertyChangeListener, InputMethodListener {
+
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final PrintStream printStream = System.out;
 
