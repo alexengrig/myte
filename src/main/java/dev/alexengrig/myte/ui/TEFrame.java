@@ -6,10 +6,7 @@ import dev.alexengrig.myte.util.SwingExecutor;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class TEFrame extends JFrame {
     private final SwingExecutor swingExecutor;
@@ -55,6 +52,7 @@ public class TEFrame extends JFrame {
         final JMenu fileMenu = new JMenu("File");
         fileMenu.add(createNewFileMenuItem());
         fileMenu.add(createOpenFileMenuItem());
+        fileMenu.add(createSaveFileMenuItem());
         return fileMenu;
     }
 
@@ -89,6 +87,22 @@ public class TEFrame extends JFrame {
             }
         });
         return openMenuItem;
+    }
+
+    private JMenuItem createSaveFileMenuItem() {
+        final JMenuItem saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.addActionListener(e -> {
+            final JFileChooser fileChooser = new JFileChooser();
+            if (JFileChooser.APPROVE_OPTION == fileChooser.showSaveDialog(this)) {
+                final File file = fileChooser.getSelectedFile();
+                try (FileWriter writer = new FileWriter(file)) {
+                    writer.write(textArea.getText());
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        return saveMenuItem;
     }
 
     private JPanel createLeftPanel() {
