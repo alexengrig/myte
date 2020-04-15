@@ -27,7 +27,7 @@ public class TEFrame extends JFrame {
     private void initComponents() {
         setJMenuBar(createMenuBar());
         setLayout(new BorderLayout());
-        textArea = new JTextArea("Input your text here");
+        textArea = new JTextArea();
         textArea.getDocument().addDocumentListener(new MyDocumentListener() {
             private int count = textArea.getLineCount();
 
