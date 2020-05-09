@@ -13,6 +13,8 @@ public class TEFrame extends JFrame {
 
     private JTextArea textArea;
     private JPanel leftPanel;
+    private JPanel bottomPanel;
+    private JLabel caretPosition;
 
     public TEFrame() {
         setTitle("My Text Editor");
@@ -40,6 +42,7 @@ public class TEFrame extends JFrame {
         });
         add(new JScrollPane(textArea));
         add(createLeftPanel(), BorderLayout.WEST);
+        add(createBottomPanel(), BorderLayout.SOUTH);
     }
 
     private JMenuBar createMenuBar() {
@@ -112,6 +115,16 @@ public class TEFrame extends JFrame {
         return leftPanel;
     }
 
+    private JPanel createBottomPanel() {
+        bottomPanel = new JPanel();
+        caretPosition = new JLabel(String.valueOf(textArea.getCaretPosition()));
+        bottomPanel.add(caretPosition);
+        textArea.addCaretListener(e -> {
+            caretPosition.setText(String.valueOf(textArea.getCaretPosition()));
+        });
+        return bottomPanel;
+    }
+
     private void updateLineNumbers(int previousCount) {
         if (previousCount != textArea.getLineCount()) {
             leftPanel.removeAll();
@@ -122,5 +135,4 @@ public class TEFrame extends JFrame {
             leftPanel.repaint();
         }
     }
-
 }
