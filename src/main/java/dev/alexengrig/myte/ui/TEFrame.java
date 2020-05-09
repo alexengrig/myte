@@ -15,7 +15,6 @@ public class TEFrame extends JFrame {
 
     private JTextArea textArea;
     private JPanel leftPanel;
-    private JPanel bottomPanel;
     private JLabel caretLabel;
 
     public TEFrame() {
@@ -63,9 +62,7 @@ public class TEFrame extends JFrame {
 
     private JMenuItem createNewFileMenuItem() {
         final JMenuItem newMenuItem = new JMenuItem("New");
-        newMenuItem.addActionListener(e -> {
-            System.out.println("New file");
-        });
+        newMenuItem.addActionListener(e -> System.out.println("New file"));
         return newMenuItem;
     }
 
@@ -118,12 +115,10 @@ public class TEFrame extends JFrame {
     }
 
     private JPanel createBottomPanel() {
-        bottomPanel = new JPanel();
+        JPanel bottomPanel = new JPanel();
         caretLabel = new JLabel(getCaretStatus());
         bottomPanel.add(caretLabel);
-        textArea.addCaretListener(e -> {
-            caretLabel.setText(getCaretStatus());
-        });
+        textArea.addCaretListener(e -> caretLabel.setText(getCaretStatus()));
         return bottomPanel;
     }
 
