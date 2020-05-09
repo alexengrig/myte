@@ -5,6 +5,8 @@ import dev.alexengrig.myte.util.SwingExecutor;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Utilities;
 import java.awt.*;
 import java.io.*;
 
@@ -14,7 +16,7 @@ public class TEFrame extends JFrame {
     private JTextArea textArea;
     private JPanel leftPanel;
     private JPanel bottomPanel;
-    private JLabel caretPosition;
+    private JLabel caretLabel;
 
     public TEFrame() {
         setTitle("My Text Editor");
@@ -117,10 +119,10 @@ public class TEFrame extends JFrame {
 
     private JPanel createBottomPanel() {
         bottomPanel = new JPanel();
-        caretPosition = new JLabel(String.valueOf(textArea.getCaretPosition()));
-        bottomPanel.add(caretPosition);
+        caretLabel = new JLabel(getCaretStatus());
+        bottomPanel.add(caretLabel);
         textArea.addCaretListener(e -> {
-            caretPosition.setText(String.valueOf(textArea.getCaretPosition()));
+            caretLabel.setText(getCaretStatus());
         });
         return bottomPanel;
     }
@@ -133,6 +135,23 @@ public class TEFrame extends JFrame {
             }
             leftPanel.revalidate();
             leftPanel.repaint();
+        }
+    }
+
+    private String getCaretStatus() {
+        try {
+            int caretPosition = textArea.getCaretPosition();
+            int row = (caretPosition == 0) ? 1 : 0;
+            for (int offset = caretPosition; offset > 0; ) {
+                offset = Utilities.getRowStart(textArea, offset) - 1;
+                row++;
+            }
+            int offset = Utilities.getRowStart(textArea, caretPosition);
+            int col = caretPosition - offset + 1;
+            return row + ":" + col;
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+            return "1:1";
         }
     }
 }
