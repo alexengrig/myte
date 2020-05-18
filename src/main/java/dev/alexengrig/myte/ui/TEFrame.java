@@ -30,7 +30,7 @@ public class TEFrame extends JFrame {
     private void initComponents() {
         setJMenuBar(createMenuBar());
         setLayout(new BorderLayout());
-        textArea = new JTextArea();
+        textArea = new JTextArea("Welcome to myte.\nThis is Text Editor.");
         textArea.getDocument().addDocumentListener(new MyDocumentListener() {
             private int count = textArea.getLineCount();
 
@@ -116,7 +116,7 @@ public class TEFrame extends JFrame {
 
     private JPanel createBottomPanel() {
         JPanel bottomPanel = new JPanel();
-        caretLabel = new JLabel(getCaretStatus());
+        caretLabel = new JLabel("1:1");
         bottomPanel.add(caretLabel);
         textArea.addCaretListener(e -> caretLabel.setText(getCaretStatus()));
         return bottomPanel;
